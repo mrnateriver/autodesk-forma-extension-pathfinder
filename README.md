@@ -2,6 +2,8 @@
 
 An Autodesk Forma extension that finds and visualizes the shortest path between two selected buildings using available roads in the scene.
 
+![Demo](demo.png)
+
 ## Features
 
 - Select two buildings in the Forma scene
