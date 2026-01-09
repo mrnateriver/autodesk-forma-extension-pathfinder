@@ -2,12 +2,25 @@ import type { Point, RoadSegment, ClosestRoadPoint, Footprint } from './types';
 
 const EPSILON = 1e-10;
 
+/**
+ * Calculates the Euclidean distance between two points.
+ *
+ * Math: Pythagorean theorem - d = sqrt((x2-x1)² + (y2-y1)²)
+ */
 export function distanceBetweenPoints(p1: Point, p2: Point): number {
   const dx = p2.x - p1.x;
   const dy = p2.y - p1.y;
   return Math.sqrt(dx * dx + dy * dy);
 }
 
+/**
+ * Finds the closest point on a line segment to a given point.
+ *
+ * Math: Orthogonal projection using the dot product.
+ * Projects point P onto line AB by computing t = ((P-A)·(B-A)) / |B-A|²
+ * where t is clamped to [0,1] to stay within the segment.
+ * The result is A + t*(B-A).
+ */
 export function closestPointOnSegment(
   point: Point,
   segmentStart: Point,
@@ -32,6 +45,12 @@ export function closestPointOnSegment(
   };
 }
 
+/**
+ * Finds the closest road point to a building center by linear search.
+ *
+ * Math: Greedy minimum search - iterates all segments and tracks
+ * the one with minimum Euclidean distance.
+ */
 export function findClosestRoadPoint(
   buildingCenter: Point,
   roadSegments: RoadSegment[]
@@ -62,6 +81,16 @@ export function findClosestRoadPoint(
   return closest;
 }
 
+/**
+ * Determines if two line segments intersect.
+ *
+ * Math: Cross product orientation test (CCW algorithm).
+ * Two segments intersect if and only if:
+ * 1. The endpoints of each segment lie on opposite sides of the other segment's line
+ * 2. Or a special case where an endpoint lies exactly on the other segment
+ *
+ * Uses the sign of the cross product to determine orientation (left/right turn).
+ */
 export function segmentsIntersect(
   p1: Point,
   p2: Point,
@@ -88,10 +117,22 @@ export function segmentsIntersect(
   return false;
 }
 
+/**
+ * Computes the cross product of vectors (p1->p2) and (p1->p3).
+ *
+ * Math: 2D cross product - (p3-p1) × (p2-p1) = (p3.x-p1.x)(p2.y-p1.y) - (p2.x-p1.x)(p3.y-p1.y)
+ * Returns: positive if p3 is left of line p1->p2 (counter-clockwise),
+ *          negative if right (clockwise), zero if collinear.
+ */
 function direction(p1: Point, p2: Point, p3: Point): number {
   return (p3.x - p1.x) * (p2.y - p1.y) - (p2.x - p1.x) * (p3.y - p1.y);
 }
 
+/**
+ * Checks if point p lies within the bounding box of segment p1-p2.
+ *
+ * Math: Axis-aligned bounding box (AABB) containment test.
+ */
 function onSegment(p1: Point, p2: Point, p: Point): boolean {
   return (
     Math.min(p1.x, p2.x) <= p.x &&
@@ -101,6 +142,15 @@ function onSegment(p1: Point, p2: Point, p: Point): boolean {
   );
 }
 
+/**
+ * Calculates the intersection point of two line segments, if it exists.
+ *
+ * Math: Parametric line intersection using Cramer's rule.
+ * Line 1: P = p1 + t*(p2-p1), Line 2: P = p3 + u*(p4-p3)
+ * Solves for t and u using the cross product (determinant).
+ * If cross product is zero, lines are parallel.
+ * Returns intersection only if 0 ≤ t,u ≤ 1 (within both segments).
+ */
 export function getIntersectionPoint(
   p1: Point,
   p2: Point,
@@ -134,6 +184,13 @@ export function getIntersectionPoint(
   return null;
 }
 
+/**
+ * Calculates the centroid (center of mass) of a polygon.
+ *
+ * Math: Arithmetic mean of vertices - centroid = (Σxi/n, Σyi/n)
+ * This is a simplification that works well for convex polygons.
+ * For precise centroid of arbitrary polygons, use the shoelace formula.
+ */
 export function getBuildingCenter(footprint: Footprint): Point {
   const coords = footprint.coordinates;
   if (!coords || coords.length === 0) {
@@ -155,6 +212,10 @@ export function getBuildingCenter(footprint: Footprint): Point {
   };
 }
 
+/**
+ * Extracts consecutive line segments from a polygon's coordinate array.
+ * No mathematical transformation - purely data restructuring.
+ */
 export function extractRoadSegments(
   footprint: Footprint,
   roadPath: string
@@ -177,12 +238,22 @@ export function extractRoadSegments(
   return segments;
 }
 
+/**
+ * Compares two points for equality within a tolerance.
+ *
+ * Math: Epsilon comparison for floating-point numbers.
+ * Two floats are "equal" if |a - b| < ε (tolerance).
+ */
 export function pointsAreEqual(p1: Point, p2: Point, tolerance = 0.001): boolean {
   return (
     Math.abs(p1.x - p2.x) < tolerance && Math.abs(p1.y - p2.y) < tolerance
   );
 }
 
+/**
+ * Converts a point to a unique string identifier.
+ * No mathematical principle - string serialization for hash map keys.
+ */
 export function pointToId(point: Point): string {
   return `${point.x.toFixed(6)},${point.y.toFixed(6)}`;
 }
