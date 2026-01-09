@@ -21,7 +21,7 @@ export function distanceBetweenPoints(p1: Point, p2: Point): number {
  * where t is clamped to [0,1] to stay within the segment.
  * The result is A + t*(B-A).
  */
-export function closestPointOnSegment(
+function closestPointOnSegment(
   point: Point,
   segmentStart: Point,
   segmentEnd: Point
@@ -91,7 +91,7 @@ export function findClosestRoadPoint(
  *
  * Uses the sign of the cross product to determine orientation (left/right turn).
  */
-export function segmentsIntersect(
+function segmentsIntersect(
   p1: Point,
   p2: Point,
   p3: Point,

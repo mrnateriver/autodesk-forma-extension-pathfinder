@@ -116,7 +116,7 @@ function getParameterOnSegment(
   return null;
 }
 
-export function addPointToGraph(
+function addPointToGraph(
   graph: Graph,
   point: Point,
   roadSegments: RoadSegment[]
@@ -160,7 +160,7 @@ export function addPointToGraph(
   return null;
 }
 
-export function dijkstra(
+function dijkstra(
   graph: Graph,
   startId: string,
   endId: string
