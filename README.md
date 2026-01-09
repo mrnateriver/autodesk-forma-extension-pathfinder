@@ -9,7 +9,6 @@ An Autodesk Forma extension that finds and visualizes the shortest path between 
 - Select two buildings in the Forma scene
 - Calculates the shortest path along the road network using Dijkstra's algorithm
 - Draws the path as a red GeoJSON LineString on the map
-- Highlights obstacles when no valid path exists
 
 ## Tech Stack
 
