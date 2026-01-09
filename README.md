@@ -1,15 +1,31 @@
-# `create-preact`
+# Forma Pathfinder Extension
 
-<h2 align="center">
-  <img height="256" width="256" src="./src/assets/preact.svg">
-</h2>
+An Autodesk Forma extension that finds and visualizes the shortest path between two selected buildings using available roads in the scene.
 
-<h3 align="center">Get started using Preact and Vite!</h3>
+## Features
+
+- Select two buildings in the Forma scene
+- Calculates the shortest path along the road network using Dijkstra's algorithm
+- Draws the path as a red GeoJSON LineString on the map
+- Highlights obstacles when no valid path exists
+
+## Tech Stack
+
+- Preact + TypeScript + Vite
+- [Forma Embedded View SDK](https://app.autodeskforma.com/forma-embedded-view-sdk/docs/)
 
 ## Getting Started
 
--   `npm run dev` - Starts a dev server at http://localhost:5173/
+```bash
+npm install
+npm run dev
+```
 
--   `npm run build` - Builds for production, emitting to `dist/`
+Then load the extension in Forma at http://localhost:5173/
 
--   `npm run preview` - Starts a server at http://localhost:4173/ to test production build locally
+## Scripts
+
+- `npm run dev` - Start dev server at http://localhost:5173/
+- `npm run build` - Build for production to `dist/`
+- `npm run preview` - Preview production build at http://localhost:4173/
+- `npm run typecheck` - Validate TypeScript types
